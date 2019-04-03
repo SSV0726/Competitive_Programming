@@ -14,7 +14,8 @@ public :
 
         void addedge(int a,int b);
         void display();
-        
+        void topological_sort(); 
+        void topSortUtil(int pos,bool vis[],stack<int> &S);
 
 };
 
@@ -37,6 +38,42 @@ void Graph::display()
     }    
 }
 
+void Graph::topological_sort()
+{
+    stack<int> S;
+    
+    bool *vis=new bool[N];
+    memset(vis,0,N);
+
+    // push in stack
+    for(int i=0;i<N;i++)
+    {
+        if(!vis[i])
+        {
+            topSortUtil(i,vis,S);
+        }
+    }
+
+    //print stack
+    while(S.empty()==false)
+    {
+        cout<<S.top()<<" ";
+        S.pop();
+    }
+}
+
+void Graph::topSortUtil(int pos,bool vis[],stack<int> &S)
+{
+    vis[pos]=1;
+    for(auto it: v[pos])
+    {
+        if(!vis[it])
+            topSortUtil(it,vis,S);
+    }
+
+    S.push(pos);
+}
+
 int main()
 {
     int n,e;
@@ -52,5 +89,6 @@ int main()
         G.addedge(a,b);
     }
     G.display();
+    G.topological_sort();
 
 }
