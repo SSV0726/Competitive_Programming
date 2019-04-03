@@ -9,7 +9,7 @@ public :
         Graph(int N)
         {
             this->N=N;
-            v = new vector<int>[N];         // its similar to java like when we create an array
+            v = new vector<int>[N];         // similar to array creation in java
         }
 
         void addedge(int a,int b);
@@ -19,66 +19,67 @@ public :
 
 };
 
-void Graph::addedge(int a,int b)
-{
-    v[a].push_back(b);
-}
-
-void Graph::display()
-{
-    for(int i=0;i<N;i++)
-    {
-        cout<<"["<<i<<"]"<<":";
-        int sz=v[i].size();
-        for(int j=0;j<sz;j++)
+        void Graph::addedge(int a,int b)    // adds directed edge to the graph 
         {
-            cout<<v[i][j]<<"->";
+            v[a].push_back(b);
         }
-        cout<<endl;
-    }    
-}
 
-void Graph::topological_sort()
-{
-    stack<int> S;
-    
-    bool *vis=new bool[N];
-    memset(vis,0,N);
+        void Graph::display()
+        { 
+            for(int i=0;i<N;i++)
+            {
+                cout<<"["<<i<<"]"<<":";
+                int sz=v[i].size();
+                for(int j=0;j<sz;j++)
+                {
+                    cout<<v[i][j]<<"->";
+                }
+                cout<<endl;
+            }    
+        }
 
-    // push in stack
-    for(int i=0;i<N;i++)
-    {
-        if(!vis[i])
+        void Graph::topological_sort()
         {
-            topSortUtil(i,vis,S);
+            stack<int> S;
+            
+            bool *vis=new bool[N];
+            memset(vis,0,N);
+
+            // push in stack
+            for(int i=0;i<N;i++)
+            {
+                if(!vis[i])
+                {
+                    topSortUtil(i,vis,S);
+                }
+            }
+
+            //print stack
+            while(S.empty()==false)
+            {
+                cout<<S.top()<<" ";
+                S.pop();
+            }
         }
-    }
 
-    //print stack
-    while(S.empty()==false)
-    {
-        cout<<S.top()<<" ";
-        S.pop();
-    }
-}
+        void Graph::topSortUtil(int pos,bool vis[],stack<int> &S)
+        {
+            vis[pos]=1;
+            for(auto it: v[pos])
+            {
+                if(!vis[it])
+                    topSortUtil(it,vis,S);
+            }
 
-void Graph::topSortUtil(int pos,bool vis[],stack<int> &S)
-{
-    vis[pos]=1;
-    for(auto it: v[pos])
-    {
-        if(!vis[it])
-            topSortUtil(it,vis,S);
-    }
-
-    S.push(pos);
-}
+            S.push(pos);
+        }
 
 int main()
 {
     int n,e;
-    cout<<"\n Enter no. of nodes in a graph";
+    cout<<"\n Enter no. of nodes of directed acyclic graph";
     cin>>n;
+    cout<<"\n Nodes avialble from 0 to  "<<n-1;
     Graph G(n);
     cout<<"\n Enter no. of edges";
     cin>>e;
