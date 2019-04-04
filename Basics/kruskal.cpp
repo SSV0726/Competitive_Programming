@@ -58,22 +58,27 @@ public:
         bool vis[nv];
         memset(vis,0,nv);
         int cnt=0;
+
+     
         for(auto it : edgL)
-        {   
-            if(vis[it.second.first])
-                continue;
+        {
             if(cnt==nv-1)
                 break;
-
-            vis[it.second.first];
+            if(vis[it.second.first] && vis[it.second.second])
+                continue;
+            
+            vis[it.second.first]=1;
+            vis[it.second.second]=1;
             MST.pb(it);
             cnt++;
+            
         }
 
         for(auto it: MST)
         {
             cout<<"["<<it.second.first<<":"<<it.second.second<<":"<<it.first<<"]"<<endl;
         }
+        
      }
 
 
